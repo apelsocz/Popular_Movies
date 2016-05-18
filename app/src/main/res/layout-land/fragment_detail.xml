@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="?android:actionBarSize">
+
+    <TextView
+        android:id="@+id/detail_original_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"/>
+    <ImageView
+        android:id="@+id/detail_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail_original_title"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true" />
+    <TextView
+        android:id="@+id/detail_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail_original_title"
+        android:layout_alignTop="@id/detail_poster"
+        android:layout_toRightOf="@id/detail_poster"
+        android:layout_margin="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+    <TextView
+        android:id="@+id/detail_vote_average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail_release"
+        android:layout_toRightOf="@id/detail_poster"
+        android:layout_margin="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+    <TextView
+        android:id="@+id/detail_plot_synopsis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/detail_poster"
+        android:layout_below="@id/detail_vote_average"
+        android:layout_margin="8dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+</RelativeLayout>
