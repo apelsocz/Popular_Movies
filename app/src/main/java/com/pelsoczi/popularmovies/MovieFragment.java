@@ -1,9 +1,6 @@
 package com.pelsoczi.popularmovies;
 
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,6 +18,7 @@ import com.pelsoczi.popularmovies.models.Movie;
 import com.pelsoczi.popularmovies.models.MoviesResponse;
 import com.pelsoczi.popularmovies.rest.ApiInterface;
 import com.pelsoczi.popularmovies.rest.RestClient;
+import com.pelsoczi.popularmovies.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +31,13 @@ public class MovieFragment extends Fragment {
 
     public static String TAG = MovieFragment.class.getSimpleName();
     public static String LOG_TAG = MovieFragment.class.getSimpleName();
-    private static final String API_KEY = "";
 
     private RecyclerView mRecycler;
     private Adapter mAdapter;
+    private int mPosition = RecyclerView.NO_POSITION;
     private List<Movie> movies = new ArrayList<Movie>();
+
+    private static final String POSITION_KEY = "position";
 
     public MovieFragment(){}
     
@@ -67,12 +67,12 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_movies);
         mRecycler.setHasFixedSize(true);
-        int spanCount = getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT ? 2 : 4 ;
-        mRecycler.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
+        int columns = Utility.getGridColumnCount(getActivity());
+
+        mRecycler.setLayoutManager(new GridLayoutManager(getActivity(), columns));
         return rootView;
     }
     
@@ -82,14 +82,18 @@ public class MovieFragment extends Fragment {
         updateMovies();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void updateMovies() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sort = prefs.getString(getString(R.string.pref_sort_key),
-                getString(R.string.pref_sort_popular));
+        String sort = Utility.getSortOrder(getActivity());
 
         ApiInterface apiService = RestClient.getClient().create(ApiInterface.class);
         Call<MoviesResponse> call = sort.equals(getString(R.string.pref_sort_popular)) ?
-                apiService.getPopularMovies(API_KEY) : apiService.getTopRatedMovies(API_KEY);
+                apiService.getPopularMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY) :
+                apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
 
         call.enqueue(new Callback<MoviesResponse>() {
             @Override
@@ -108,14 +112,11 @@ public class MovieFragment extends Fragment {
             }
         });
 
-        int iconResId = sort.equals(getString(R.string.pref_sort_popular)) ?
-                R.drawable.ic_whatshot_black_24dp : R.drawable.ic_stars_black_24dp;
-        String title = sort.equals(getString(R.string.pref_sort_popular)) ?
-                getString(R.string.pref_sort_label_popular) :
-                getString(R.string.pref_sort_label_rating);
+        int iconResId = Utility.getSortIconResId(getActivity());
+        String subtitle = Utility.getSortLabel(getActivity());
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.app_bar);
         toolbar.setLogo(iconResId);
-        toolbar.setTitle("  " + title);
+        toolbar.setSubtitle(subtitle);
     }
 }

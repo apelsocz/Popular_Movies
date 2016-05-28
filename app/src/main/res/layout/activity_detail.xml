@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MovieActivity"
+    tools:context=".DetailActivity"
     tools:ignore="MergeRootFrame">
 
     <include
         layout="@layout/app_bar" />
 
-    <fragment class="com.pelsoczi.popularmovies.MovieFragment"
-        android:id="@+id/container_movie"
+    <FrameLayout
+        android:id="@+id/container_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

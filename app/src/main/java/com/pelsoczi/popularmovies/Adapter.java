@@ -2,7 +2,6 @@ package com.pelsoczi.popularmovies;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -18,6 +17,7 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
+    public static final String TAG = Adapter.class.getSimpleName();
     private static final String LOG_TAG = Adapter.class.getSimpleName();
 
     public final Context mContext;
@@ -80,6 +80,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         private final Context context;
         private final ImageView poster;
+        private int position;
         private Movie movie;
 
         public CellViewHolder(Context context, View itemView) {
@@ -87,6 +88,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
             this.context = context;
             poster = (ImageView) itemView.findViewById(R.id.movie_poster);
             poster.setOnClickListener(this);
+            position = getAdapterPosition();
         }
 
         public void setMovie(Movie movie) {
@@ -95,9 +97,8 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, DetailActivity.class)
-                    .putExtra(Movie.TAG, movie);
-            context.startActivity(intent);
+            MovieActivity activity = ((MovieActivity)context);
+            activity.showDetails(movie, position);
         }
     }
 }

@@ -19,9 +19,12 @@ import java.text.SimpleDateFormat;
 public class DetailFragment extends Fragment {
 
     public static final String TAG = DetailFragment.class.getSimpleName();
+    public static final String MOVIE_INDEX = "index";
+
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
     Movie movie;
+    int index;
 
     private TextView originalTitle;
     private ImageView poster;
@@ -29,12 +32,17 @@ public class DetailFragment extends Fragment {
     private TextView average;
     private TextView synopsis;
 
-    public static DetailFragment newInstace(Movie movie) {
+    public static DetailFragment newInstance(Movie movie, int index) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Movie.TAG, movie);
+        bundle.putInt(MOVIE_INDEX, index);
         DetailFragment detail = new DetailFragment();
         detail.setArguments(bundle);
         return detail;
+    }
+
+    public int getShownIndex() {
+        return getArguments().getInt(MOVIE_INDEX, -1);
     }
 
     @Override

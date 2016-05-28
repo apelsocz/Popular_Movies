@@ -1,40 +1,39 @@
 package com.pelsoczi.popularmovies;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pelsoczi.popularmovies.models.Movie;
+
 public class MovieActivity extends AppCompatActivity {
 
     private static String LOG_TAG = MovieActivity.class.getSimpleName();
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String sort = prefs.getString(getString(R.string.pref_sort_key),
-                getString(R.string.pref_sort_popular));
-
-        String title = sort.equals(getString(R.string.pref_sort_popular)) ?
-                getString(R.string.pref_sort_label_popular) :
-                getString(R.string.pref_sort_label_rating);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("  " + title);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_movie, new MovieFragment(), MovieFragment.TAG)
-                    .commit();
+        if (findViewById(R.id.container_detail) != null) {
+            mTwoPane = true;
+//            if (savedInstanceState == null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.container_movie, new MovieFragment(), MovieFragment.TAG)
+//                        .commit();
         }
+        else {
+            mTwoPane = false;
+        }
+//        }
     }
 
     @Override
@@ -52,5 +51,27 @@ public class MovieActivity extends AppCompatActivity {
             return true;
         }
         return true;
+    }
+
+    void showDetails(Movie movie, int index) {
+        if (mTwoPane) {
+            DetailFragment detail = (DetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_detail);
+
+            //// TODO: 16-05-28 add to backstack
+            if (detail == null || detail.getShownIndex() != index) {
+                detail = DetailFragment.newInstance(movie, index);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_detail, detail, DetailFragment.TAG)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        }
+        else {
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .putExtra(Movie.TAG, movie)
+                    .putExtra(DetailFragment.MOVIE_INDEX, index);
+            startActivity(intent);
+        }
     }
 }

@@ -10,8 +10,10 @@
     <string name="pref_sort_label">Sort Order</string>
     <string name="pref_sort_label_popular">Most Popular</string>
     <string name="pref_sort_label_rating">Top Rated</string>
+    <string name="pref_sort_label_favorite">Favorites</string>
     <string name="pref_sort_key" translatable="false">sort</string>
     <string name="pref_sort_popular" translatable="false">popular</string>
     <string name="pref_sort_rating" translatable="false">rating</string>
+    <string name="pref_sort_favorite" translatable="false">favorites</string>
 
 </resources>

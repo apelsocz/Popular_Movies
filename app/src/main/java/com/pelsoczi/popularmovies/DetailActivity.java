@@ -15,10 +15,11 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie);
+        setContentView(R.layout.activity_detail);
 
         Intent intent = getIntent();
         Movie movie = intent.getExtras().getParcelable(Movie.TAG);
+        int index = intent.getExtras().getInt(DetailFragment.MOVIE_INDEX);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -26,7 +27,7 @@ public class DetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_movie, DetailFragment.newInstace(movie), DetailFragment.TAG)
+                    .add(R.id.container_detail, DetailFragment.newInstance(movie, index), DetailFragment.TAG)
                     .commit();
         }
     }
