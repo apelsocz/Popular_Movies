@@ -8,11 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.stetho.Stetho;
 import com.pelsoczi.popularmovies.models.Movie;
+import com.pelsoczi.popularmovies.ui.DetailFragment;
+import com.squareup.picasso.Picasso;
 
 public class MovieActivity extends AppCompatActivity {
 
     private static String LOG_TAG = MovieActivity.class.getSimpleName();
+
     private boolean mTwoPane;
 
     @Override
@@ -21,19 +25,21 @@ public class MovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        String title = "  " + getResources().getString(R.string.app_name);
+        toolbar.setTitle(title);
         setSupportActionBar(toolbar);
 
-        if (findViewById(R.id.container_detail) != null) {
-            mTwoPane = true;
-//            if (savedInstanceState == null) {
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.container_movie, new MovieFragment(), MovieFragment.TAG)
-//                        .commit();
+        mTwoPane = findViewById(R.id.container_detail) != null;
+
+        Picasso.Builder builder = new Picasso.Builder(this);
+        Picasso picasso = builder.build();
+        try {
+            Picasso.setSingletonInstance(picasso);
+        } catch (IllegalStateException e) {
+            // not interested
         }
-        else {
-            mTwoPane = false;
-        }
-//        }
+
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override
@@ -50,20 +56,20 @@ public class MovieActivity extends AppCompatActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
-        return true;
+        return false;
     }
 
-    void showDetails(Movie movie, int index) {
+    public void showDetails(Movie movie, int index) {
         if (mTwoPane) {
             DetailFragment detail = (DetailFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.fragment_detail);
 
-            //// TODO: 16-05-28 add to backstack
             if (detail == null || detail.getShownIndex() != index) {
                 detail = DetailFragment.newInstance(movie, index);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container_detail, detail, DetailFragment.TAG)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(DetailFragment.TAG)
                         .commit();
             }
         }

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-        <fragment class="com.pelsoczi.popularmovies.MovieFragment"
+        <fragment class="com.pelsoczi.popularmovies.ui.MovieFragment"
             android:id="@+id/container_movie"
             android:layout_width="0dp"
             android:layout_height="match_parent"

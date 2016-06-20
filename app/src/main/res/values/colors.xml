@@ -2,5 +2,9 @@
 <resources>
     <color name="colorPrimary">#F5F5F5</color>
     <color name="colorPrimaryDark">#E0E0E0</color>
-    <color name="colorAccent">#7C4DFF</color>
+    <color name="colorPrimaryDarkOpaque">#10E0E0E0</color>
+    <color name="colorAccent">#D50000</color>
+    <color name="windowBackground">#F5F5F5</color>
+    <color name="divider">#12000000</color>
+    <color name="black_transparent">#50000000</color>
 </resources>

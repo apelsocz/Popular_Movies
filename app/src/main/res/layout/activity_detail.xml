@@ -7,12 +7,20 @@
     tools:context=".DetailActivity"
     tools:ignore="MergeRootFrame">
 
-    <include
-        layout="@layout/app_bar" />
-
     <FrameLayout
         android:id="@+id/container_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/ToolbarTheme"
+        android:elevation="0dp"
+        app:popupTheme="@style/PopupTheme" />
 
 </android.support.design.widget.CoordinatorLayout>

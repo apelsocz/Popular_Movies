@@ -10,7 +10,7 @@
     <include
         layout="@layout/app_bar" />
 
-    <fragment class="com.pelsoczi.popularmovies.MovieFragment"
+    <fragment class="com.pelsoczi.popularmovies.ui.MovieFragment"
         android:id="@+id/container_movie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

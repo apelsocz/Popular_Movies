@@ -23,7 +23,6 @@ public class Movie implements Parcelable {
     private String releaseDate;
     @SerializedName("genre_ids")
     private List<Integer> genreIds = new ArrayList<Integer>();
-//    private List<Integer> genreIds;
     @SerializedName("id")
     private Integer id;
     @SerializedName("original_title")
@@ -43,9 +42,26 @@ public class Movie implements Parcelable {
     @SerializedName("vote_average")
     private Double voteAverage;
 
+    public Movie() {
+        posterPath = "";
+        adult = false;
+        overview = "";
+        releaseDate = "";
+        // genreIds already initialized
+        id = -1;
+        originalTitle = "";
+        originalLanguage = "";
+        title = "";
+        backdropPath = "";
+        popularity = -1.0;
+        voteCount = -1;
+        video = false;
+        voteAverage = -1.0;
+    }
+
     public Movie(Parcel in) {
         this.posterPath = in.readString();
-        this.adult = (in.readInt() == 1) ? true : false;
+        this.adult = in.readInt() == 1;
         this.overview = in.readString();
         this.releaseDate = in.readString();
         in.readList(this.genreIds, List.class.getClassLoader());
@@ -56,7 +72,7 @@ public class Movie implements Parcelable {
         this.backdropPath = in.readString();
         this.popularity = in.readDouble();
         this.voteCount = in.readInt();
-        this.video = (in.readInt() == 1) ? true : false;
+        this.video = in.readInt() == 1;
         this.voteAverage = in.readDouble();
     }
 
@@ -71,6 +87,29 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(posterPath);
+        dest.writeInt(adult ? 1 : 0);
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        dest.writeList(this.genreIds);
+        dest.writeInt(id);
+        dest.writeString(originalTitle);
+        dest.writeString(originalLanguage);
+        dest.writeString(title);
+        dest.writeString(backdropPath);
+        dest.writeDouble(popularity);
+        dest.writeInt(voteCount);
+        dest.writeInt(video ? 1 : 0);
+        dest.writeDouble(voteAverage);
+    }
 
     /**
      * 
@@ -322,29 +361,5 @@ public class Movie implements Parcelable {
      */
     public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(posterPath);
-        dest.writeInt(adult ? 1 : 0);
-        dest.writeString(overview);
-        dest.writeString(releaseDate);
-//        dest.writeArray(genreIds.toArray());
-        dest.writeList(this.genreIds);
-        dest.writeInt(id);
-        dest.writeString(originalTitle);
-        dest.writeString(originalLanguage);
-        dest.writeString(title);
-        dest.writeString(backdropPath);
-        dest.writeDouble(popularity);
-        dest.writeInt(voteCount);
-        dest.writeInt(video ? 1 : 0);
-        dest.writeDouble(voteAverage);
     }
 }

@@ -5,11 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?android:actionBarSize"
-    tools:context=".MovieFragment">
+    tools:context=".ui.MovieFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_movies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:overScrollMode="always"
+        android:animationCache="false"
+        android:verticalScrollbarPosition="right"
+        android:scrollbarStyle="insideOverlay" />
 
 </RelativeLayout>

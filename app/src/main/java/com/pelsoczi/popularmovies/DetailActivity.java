@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.pelsoczi.popularmovies.models.Movie;
+import com.pelsoczi.popularmovies.ui.DetailFragment;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

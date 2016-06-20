@@ -12,9 +12,8 @@ public class Utility {
 
     public static String getSortOrder(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String sort = prefs.getString(context.getString(R.string.pref_sort_key),
-                context.getString(R.string.pref_sort_popular));
-        return sort;
+        return prefs.getString(context.getString(R.string.pref_sort_key),
+                context.getString(R.string.pref_sort_favorite));
     }
 
     public static String getSortLabel(Context context) {
@@ -28,8 +27,7 @@ public class Utility {
         if (sort.equals(context.getString(R.string.pref_sort_favorite))) {
             return context.getString(R.string.pref_sort_label_favorite);
         }
-
-        return context.getString(R.string.pref_sort_label_popular);
+        return null;
     }
 
     public static int getSortIconResId (Context context) {
@@ -49,12 +47,15 @@ public class Utility {
     public static int getGridColumnCount(Context context) {
         boolean tablet = context.getResources().getBoolean(R.bool.isTablet);
         int orientation = context.getResources().getConfiguration().orientation;
-
+        int columns;
         if (!tablet && orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return 4;
+            columns = 4;
         }
         else {
-            return 2;
+            columns = 2;
         }
+
+        return getSortOrder(context).equals(context.getString(R.string.pref_sort_favorite))
+                ? columns/2 : columns;
     }
 }
