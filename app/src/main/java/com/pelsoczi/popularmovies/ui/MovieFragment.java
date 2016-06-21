@@ -83,6 +83,15 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (Utility.getSortOrder(getActivity()).equals(getString(R.string.pref_sort_favorite))
+                && mAdapter != null) {
+            getLoaderManager().restartLoader(LOADER_MOVIE, null, this);
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(STATE_MOVIES, (ArrayList) movies);
@@ -133,9 +142,10 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         }
     }
 
-    private void updateRecycler() {
+    private void updateUI() {
         mRecycler.setLayoutManager(
                 new GridLayoutManager(getActivity(), Utility.getGridColumnCount(getActivity())));
+
         mAdapter = new Adapter(getActivity(), movies);
         mAdapter.setHasStableIds(true);
         mRecycler.setAdapter(mAdapter);
@@ -189,7 +199,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 movie.setVoteAverage(data.getDouble(voteAverage));
                 movies.add(movie);
             } while (data.moveToNext());
-            updateRecycler();
+            updateUI();
         }
     }
 
@@ -214,7 +224,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            updateRecycler();
+            updateUI();
         }
     }
 }
