@@ -27,9 +27,9 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     public final Context mContext;
     private final LayoutInflater mLayoutInflater;
-    private final List<Movie> items;
+    private List<Movie> items;
     // cache for quicker response
-    private final int itemsSize;
+    private int itemsSize;
     private boolean favorites;
 
     public Adapter(Context context, List<Movie> movies) {

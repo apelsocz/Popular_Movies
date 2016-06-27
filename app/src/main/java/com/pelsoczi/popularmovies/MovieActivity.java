@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.facebook.stetho.Stetho;
 import com.pelsoczi.popularmovies.models.Movie;
 import com.pelsoczi.popularmovies.ui.DetailFragment;
+import com.pelsoczi.popularmovies.util.Utility;
 import com.squareup.picasso.Picasso;
 
 public class MovieActivity extends AppCompatActivity {
@@ -18,16 +19,15 @@ public class MovieActivity extends AppCompatActivity {
     private static String LOG_TAG = MovieActivity.class.getSimpleName();
 
     private boolean mTwoPane;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        String title = "  " + getResources().getString(R.string.app_name);
-        toolbar.setTitle(title);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mToolbar);
 
         mTwoPane = findViewById(R.id.container_detail) != null;
 
@@ -59,6 +59,15 @@ public class MovieActivity extends AppCompatActivity {
         return false;
     }
 
+    public void updateUI() {
+        String title = getResources().getString(R.string.app_name);
+        String subtitle = Utility.getSortLabel(this);
+        int iconResId = Utility.getSortIconResId(this);
+        mToolbar.setTitle(title);
+        mToolbar.setSubtitle(subtitle);
+        mToolbar.setLogo(iconResId);
+    }
+
     public void showDetails(Movie movie, int index) {
         if (mTwoPane) {
             DetailFragment detail = (DetailFragment) getSupportFragmentManager()
@@ -78,6 +87,15 @@ public class MovieActivity extends AppCompatActivity {
                     .putExtra(Movie.TAG, movie)
                     .putExtra(DetailFragment.MOVIE_INDEX, index);
             startActivity(intent);
+        }
+    }
+
+    public void loadDetails(Movie movie, int index) {
+        if (mTwoPane) {
+            DetailFragment detail = DetailFragment.newInstance(movie, index);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container_detail, detail, DetailFragment.TAG)
+                    .commitAllowingStateLoss();
         }
     }
 }

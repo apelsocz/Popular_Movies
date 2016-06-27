@@ -215,7 +215,10 @@ public class DetailFragment extends Fragment {
                         .appendQueryParameter(PARAM_VIDEO, KEY_VIDEO)
                         .build();
 
-                startActivity(new Intent(Intent.ACTION_VIEW, builtUri));
+                Intent trailerIntent = new Intent(Intent.ACTION_VIEW, builtUri);
+                if (trailerIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(trailerIntent);
+                }
             }
         });
         reviewsButton.setOnClickListener(new Button.OnClickListener() {
